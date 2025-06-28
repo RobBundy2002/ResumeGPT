@@ -4,8 +4,8 @@ import axios from 'axios';
 const getApiUrl = () => {
   // For production (GitLab Pages), use the deployed backend URL
   if (process.env.NODE_ENV === 'production') {
-    // You'll need to replace this with your actual backend URL
-    return process.env.REACT_APP_API_URL || 'https://your-backend-url.railway.app';
+    // Replace this with your actual Railway URL
+    return process.env.REACT_APP_API_URL || 'https://resumegpt-production-04e3.up.railway.app';
   }
   // For development, use localhost
   return 'http://localhost:5000';
