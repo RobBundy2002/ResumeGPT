@@ -1,6 +1,17 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+// Determine API URL based on environment
+const getApiUrl = () => {
+  // For production (GitLab Pages), use the deployed backend URL
+  if (process.env.NODE_ENV === 'production') {
+    // You'll need to replace this with your actual backend URL
+    return process.env.REACT_APP_API_URL || 'https://your-backend-url.railway.app';
+  }
+  // For development, use localhost
+  return 'http://localhost:5000';
+};
+
+const API_BASE_URL = getApiUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -8,6 +19,29 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// Add request interceptor for debugging
+api.interceptors.request.use(
+  (config) => {
+    console.log('API Request:', config.method?.toUpperCase(), config.url);
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for debugging
+api.interceptors.response.use(
+  (response) => {
+    console.log('API Response:', response.status, response.config.url);
+    return response;
+  },
+  (error) => {
+    console.error('API Error:', error.response?.status, error.response?.data);
+    return Promise.reject(error);
+  }
+);
 
 export const analyzeResume = async (resumeText, jobDescription) => {
   try {
