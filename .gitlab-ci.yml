@@ -1,0 +1,45 @@
+image: node:18
+
+cache:
+  paths:
+    - client/node_modules/
+    - node_modules/
+
+stages:
+  - install
+  - build
+  - deploy
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+    - cd client && npm install
+  artifacts:
+    paths:
+      - client/node_modules/
+      - node_modules/
+
+build_frontend:
+  stage: build
+  script:
+    - cd client
+    - npm run build
+  artifacts:
+    paths:
+      - client/build/
+    expire_in: 1 hour
+
+deploy_to_pages:
+  stage: deploy
+  script:
+    - cp -r client/build/* public/
+  artifacts:
+    paths:
+      - public/
+    expire_in: 30 days
+  only:
+    - main
+  environment:
+    name: production
+    url: https://$CI_PROJECT_PATH_SLUG.gitlab.io/$CI_PROJECT_NAME 

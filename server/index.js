@@ -4,16 +4,26 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const multer = require('multer');
 const pdf = require('pdf-parse');
-const OpenAI = require('openai');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize OpenAI only if API key is available
+let openai = null;
+if (process.env.OPENAI_API_KEY) {
+  try {
+    const OpenAI = require('openai');
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    console.log('OpenAI client initialized successfully');
+  } catch (error) {
+    console.log('OpenAI client initialization failed:', error.message);
+  }
+} else {
+  console.log('No OpenAI API key found, using mock mode');
+}
 
 // Add debugging for API key
 console.log('OpenAI API Key format check:', {
@@ -59,6 +69,15 @@ app.get('/api/health', (req, res) => {
 // Test OpenAI connection
 app.get('/api/test-openai', async (req, res) => {
   try {
+    if (!openai) {
+      return res.json({ 
+        apiKeyConfigured: false,
+        availableModels: [],
+        message: 'OpenAI not configured, using mock mode',
+        mode: 'mock'
+      });
+    }
+
     const models = ["gpt-4o-mini", "gpt-3.5-turbo", "gpt-4o"];
     let availableModels = [];
     
@@ -78,12 +97,14 @@ app.get('/api/test-openai', async (req, res) => {
     res.json({ 
       apiKeyConfigured: !!process.env.OPENAI_API_KEY,
       availableModels,
-      message: 'OpenAI connection test completed'
+      message: 'OpenAI connection test completed',
+      mode: 'openai'
     });
   } catch (error) {
     res.status(500).json({ 
       error: error.message,
-      apiKeyConfigured: !!process.env.OPENAI_API_KEY
+      apiKeyConfigured: !!process.env.OPENAI_API_KEY,
+      mode: 'error'
     });
   }
 });
@@ -123,8 +144,8 @@ app.post('/api/analyze', async (req, res) => {
       });
     }
 
-    // Check if we should use mock mode (when API quota is exceeded)
-    const useMockMode = process.env.USE_MOCK_MODE === 'true' || false;
+    // Check if we should use mock mode (when API quota is exceeded or no OpenAI)
+    const useMockMode = process.env.USE_MOCK_MODE === 'true' || !openai;
     
     if (useMockMode) {
       console.log('Using mock analysis mode');
