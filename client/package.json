@@ -1,6 +1,7 @@
 {
   "name": "resumegpt-client",
   "version": "1.0.0",
+  "homepage": "https://robundy2002.github.io/ResumeGPT",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
