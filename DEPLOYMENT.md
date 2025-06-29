@@ -1,10 +1,10 @@
 # 🚀 Deployment Guide - ResumeGPT
 
-This guide will help you deploy ResumeGPT to GitLab Pages with a separate backend service.
+This guide will help you deploy ResumeGPT to GitHub Pages with a separate backend service.
 
 ## 📋 Prerequisites
 
-- GitLab account
+- GitHub account
 - Railway/Render/Heroku account (for backend)
 - OpenAI API key (optional - app works with mock mode)
 
@@ -14,32 +14,33 @@ This guide will help you deploy ResumeGPT to GitLab Pages with a separate backen
 
 #### Option A: Railway (Free Tier)
 1. **Sign up** at [railway.app](https://railway.app)
-2. **Connect your GitLab repo** to Railway
+2. **Connect your GitHub repo** to Railway
 3. **Set environment variables:**
    ```
    OPENAI_API_KEY=your_openai_api_key_here
    NODE_ENV=production
    PORT=5000
+   USE_MOCK_MODE=true
    ```
 4. **Deploy** - Railway will automatically detect the Node.js app
-5. **Copy the deployment URL** (e.g., `https://resumegpt-backend.railway.app`)
+5. **Copy the deployment URL** (e.g., `https://resumegpt-production-xxxx.up.railway.app`)
 
 #### Option B: Render (Free Tier)
 1. **Sign up** at [render.com](https://render.com)
 2. **Create a new Web Service**
-3. **Connect your GitLab repo**
+3. **Connect your GitHub repo**
 4. **Configure:**
    - Build Command: `npm install && cd server && npm install`
    - Start Command: `cd server && npm start`
    - Environment Variables: Same as Railway
 5. **Deploy and copy the URL**
 
-### 2. Frontend Deployment (GitLab Pages)
+### 2. Frontend Deployment (GitHub Pages)
 
-1. **Push your code to GitLab:**
+1. **Push your code to GitHub:**
    ```bash
    git add .
-   git commit -m "Add deployment configuration"
+   git commit -m "Add GitHub Pages deployment configuration"
    git push origin main
    ```
 
@@ -47,20 +48,21 @@ This guide will help you deploy ResumeGPT to GitLab Pages with a separate backen
    - Edit `client/src/services/api.js`
    - Replace `'https://your-backend-url.railway.app'` with your actual backend URL
 
-3. **Enable GitLab Pages:**
-   - Go to your GitLab project
+3. **Enable GitHub Pages:**
+   - Go to your GitHub repository
    - Navigate to **Settings > Pages**
-   - Enable Pages if not already enabled
+   - Set Source to "GitHub Actions"
+   - The workflow will automatically deploy
 
-4. **The CI/CD pipeline will automatically:**
+4. **The GitHub Actions workflow will automatically:**
    - Install dependencies
    - Build the React app
-   - Deploy to GitLab Pages
+   - Deploy to GitHub Pages
 
 ### 3. Environment Variables Setup
 
-#### For Frontend (GitLab CI/CD Variables):
-1. Go to **Settings > CI/CD > Variables**
+#### For Frontend (GitHub Secrets):
+1. Go to **Settings > Secrets and variables > Actions**
 2. Add:
    ```
    REACT_APP_API_URL=https://your-backend-url.railway.app
@@ -76,7 +78,7 @@ USE_MOCK_MODE=false  # Set to 'true' if you want to use mock analysis
 
 ## 🔧 Configuration Files
 
-### GitLab CI/CD (`.gitlab-ci.yml`)
+### GitHub Actions (`.github/workflows/deploy.yml`)
 - Automatically builds and deploys frontend
 - Runs on every push to `main` branch
 
@@ -88,7 +90,7 @@ USE_MOCK_MODE=false  # Set to 'true' if you want to use mock analysis
 ## 🌐 Final URLs
 
 After deployment, you'll have:
-- **Frontend**: `https://yourusername.gitlab.io/ResumeGPT`
+- **Frontend**: `https://yourusername.github.io/ResumeGPT`
 - **Backend**: `https://your-backend-url.railway.app`
 
 ## 🧪 Testing Deployment
@@ -99,13 +101,13 @@ After deployment, you'll have:
    ```
 
 2. **Test the frontend:**
-   - Visit your GitLab Pages URL
+   - Visit your GitHub Pages URL
    - Try uploading a resume and analyzing it
 
 ## 🔍 Troubleshooting
 
 ### Frontend Issues
-- **CORS errors**: Make sure backend CORS is configured for your GitLab Pages domain
+- **CORS errors**: Make sure backend CORS is configured for your GitHub Pages domain
 - **API not found**: Check the `REACT_APP_API_URL` environment variable
 
 ### Backend Issues
@@ -113,15 +115,15 @@ After deployment, you'll have:
 - **OpenAI errors**: Check API key and quota
 - **Build failures**: Check Railway/Render logs
 
-### GitLab Pages Issues
-- **Build failures**: Check GitLab CI/CD pipeline logs
-- **404 errors**: Make sure the `public/` folder is being created correctly
+### GitHub Pages Issues
+- **Build failures**: Check GitHub Actions workflow logs
+- **404 errors**: Make sure the `gh-pages` branch is being created correctly
 
 ## 📊 Monitoring
 
-### GitLab CI/CD
-- View pipeline status in your GitLab project
-- Check build logs for any issues
+### GitHub Actions
+- View workflow status in your GitHub repository
+- Check Actions tab for build logs
 
 ### Backend Services
 - **Railway**: Dashboard shows logs and metrics
@@ -131,13 +133,13 @@ After deployment, you'll have:
 
 To update your deployment:
 1. **Make changes** to your code
-2. **Push to GitLab:**
+2. **Push to GitHub:**
    ```bash
    git add .
    git commit -m "Update app"
    git push origin main
    ```
-3. **Frontend** will automatically redeploy via GitLab CI/CD
+3. **Frontend** will automatically redeploy via GitHub Actions
 4. **Backend** will automatically redeploy via Railway/Render
 
 ## 💡 Pro Tips
@@ -149,10 +151,11 @@ To update your deployment:
 
 ## 🆘 Need Help?
 
-- **GitLab Pages**: [GitLab Pages Documentation](https://docs.gitlab.com/ee/user/project/pages/)
+- **GitHub Pages**: [GitHub Pages Documentation](https://docs.github.com/en/pages)
+- **GitHub Actions**: [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - **Railway**: [Railway Documentation](https://docs.railway.app/)
 - **Render**: [Render Documentation](https://render.com/docs)
 
 ---
 
-**Your ResumeGPT will be live at: `https://yourusername.gitlab.io/ResumeGPT`** 🎉 
+**Your ResumeGPT will be live at: `https://yourusername.github.io/ResumeGPT`** 🎉 

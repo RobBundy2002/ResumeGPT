@@ -60,7 +60,7 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
 
 ## 🌐 Live Demo
 
-- **Frontend**: [GitLab Pages](https://yourusername.gitlab.io/ResumeGPT)
+- **Frontend**: [GitHub Pages](https://yourusername.github.io/ResumeGPT)
 - **Backend**: [Railway](https://resumegpt-production-04e3.up.railway.app)
 
 ## 🛠️ Tech Stack
@@ -130,7 +130,17 @@ The analysis prompt can be customized in `server/index.js`. Look for the `prompt
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+### GitHub Pages (Current)
+1. Push your code to GitHub
+2. GitHub Actions automatically builds and deploys
+3. Your site will be available at `https://yourusername.github.io/ResumeGPT`
+
+### Railway (Backend)
+1. Connect your GitHub repository to Railway
+2. Set environment variables in Railway dashboard
+3. Deploy automatically on push
+
+### Vercel
 1. Connect your GitHub repository to Vercel
 2. Set environment variables in Vercel dashboard
 3. Deploy automatically on push
