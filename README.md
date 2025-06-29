@@ -58,15 +58,10 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
 
-## 🌐 Live Demo
-
-- **Frontend**: [GitHub Pages](https://yourusername.github.io/ResumeGPT)
-- **Backend**: [Railway](https://resumegpt-production-04e3.up.railway.app)
-
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** - Modern UI framework
+- **React** - Modern UI framework
 - **Tailwind CSS** - Utility-first CSS framework
 - **Lucide React** - Beautiful icons
 - **React Dropzone** - File upload functionality
