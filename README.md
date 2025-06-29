@@ -43,9 +43,9 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
 3. **Set up environment variables**
    ```bash
    # Copy the example environment file
-   cp server/.env.example server/..env
+   cp server/env.example server/.env
    
-   # Edit server/..env and add your OpenAI API key
+   # Edit server/.env and add your OpenAI API key
    OPENAI_API_KEY=your_openai_api_key_here
    ```
 
@@ -57,6 +57,11 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
 5. **Open your browser**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
+
+## 🌐 Live Demo
+
+- **Frontend**: [GitLab Pages](https://yourusername.gitlab.io/ResumeGPT)
+- **Backend**: [Railway](https://resumegpt-production-04e3.up.railway.app)
 
 ## 🛠️ Tech Stack
 
