@@ -39,11 +39,11 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Input */}
           <div className="space-y-6">
-            <ResumeUpload 
-              resumeText={resumeText} 
-              setResumeText={setResumeText} 
+            <ResumeUpload
+                resumeText={resumeText}
+                setResumeText={setResumeText}
             />
-            
+
             <JobDescriptionInput 
               jobDescription={jobDescription} 
               setJobDescription={setJobDescription} 
