@@ -9,7 +9,7 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
 
 ## ✨ Features
 
-- **📝 Resume Input**: Simple text-based resume input for quick analysis
+- **📄 Resume Upload**: Support for PDF and text files with drag-and-drop interface
 - **🎯 Job Description Analysis**: Paste any job description for comprehensive matching
 - **🤖 AI-Powered Analysis**: Uses GPT-4 for intelligent resume-job matching
 - **📊 Match Scoring**: 0-100 score with visual progress indicators
@@ -55,20 +55,16 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
    ```
 
 5. **Open your browser**
-   - Frontend: http://localhost:3001
+   - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
-
-## 🌐 Live Demo
-
-- **Frontend**: [GitHub Pages](https://robundy2002.github.io/ResumeGPT)
-- **Backend**: [Railway](https://resumegpt-production-04e3.up.railway.app)
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** - Modern UI framework
+- **React** - Modern UI framework
 - **Tailwind CSS** - Utility-first CSS framework
 - **Lucide React** - Beautiful icons
+- **React Dropzone** - File upload functionality
 - **React Hot Toast** - User notifications
 - **Axios** - HTTP client
 
@@ -76,12 +72,14 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web framework
 - **OpenAI API** - GPT-4 integration
+- **Multer** - File upload handling
+- **PDF-Parse** - PDF text extraction
 - **Helmet** - Security middleware
 - **CORS** - Cross-origin resource sharing
 
 ## 📖 Usage
 
-1. **Paste Resume**: Copy and paste your resume content into the text area
+1. **Upload Resume**: Drag and drop a PDF or text file, or paste your resume content directly
 2. **Add Job Description**: Paste the complete job description you want to match against
 3. **Analyze**: Click "Analyze Match" to get AI-powered insights
 4. **Review Results**: 
@@ -95,6 +93,13 @@ A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes agai
 ### Health Check
 ```
 GET /api/health
+```
+
+### Upload Resume
+```
+POST /api/upload-resume
+Content-Type: multipart/form-data
+Body: resume file (PDF or TXT)
 ```
 
 ### Analyze Resume
@@ -146,13 +151,14 @@ The analysis prompt can be customized in `server/index.js`. Look for the `prompt
 docker build -t resumegpt .
 
 # Run the container
-docker run -p 3001:3001 -p 5000:5000 resumegpt
+docker run -p 3000:3000 -p 5000:5000 resumegpt
 ```
 
 ## 🔒 Security
 
 - Rate limiting on API endpoints
 - Helmet.js for security headers
+- File upload validation
 - CORS configuration
 - Input sanitization
 
