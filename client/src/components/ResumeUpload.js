@@ -1,60 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, X } from 'lucide-react';
+import React from 'react';
+import { FileText, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ResumeUpload = ({ resumeText, setResumeText }) => {
-  const [isUploading, setIsUploading] = useState(false);
-
-  const onDrop = useCallback(async (acceptedFiles) => {
-    const file = acceptedFiles[0];
-    if (!file) return;
-
-    setIsUploading(true);
-    
-    try {
-      // For now, we'll handle text files directly
-      if (file.type === 'text/plain') {
-        const text = await file.text();
-        setResumeText(text);
-        toast.success('Resume uploaded successfully!');
-      } else if (file.type === 'application/pdf') {
-        // For PDF files, we'll need to send to backend for parsing
-        const formData = new FormData();
-        formData.append('resume', file);
-        
-        const response = await fetch('/api/upload-resume', {
-          method: 'POST',
-          body: formData,
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setResumeText(data.text);
-          toast.success('PDF resume uploaded and parsed successfully!');
-        } else {
-          throw new Error('Failed to upload PDF');
-        }
-      } else {
-        toast.error('Please upload a PDF or text file');
-      }
-    } catch (error) {
-      console.error('Upload error:', error);
-      toast.error('Failed to upload resume. Please try again.');
-    } finally {
-      setIsUploading(false);
-    }
-  }, [setResumeText]);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: {
-      'application/pdf': ['.pdf'],
-      'text/plain': ['.txt']
-    },
-    multiple: false
-  });
-
   const handleTextChange = (e) => {
     setResumeText(e.target.value);
   };
@@ -78,43 +26,16 @@ const ResumeUpload = ({ resumeText, setResumeText }) => {
         )}
       </div>
 
-      {/* File Upload Area */}
-      <div
-        {...getRootProps()}
-        className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all duration-200 mb-4 ${
-          isDragActive
-            ? 'border-primary-500 bg-primary-50'
-            : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50'
-        }`}
-      >
-        <input {...getInputProps()} />
-        <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-        {isUploading ? (
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-600 mr-2"></div>
-            <span className="text-sm text-gray-600">Processing...</span>
-          </div>
-        ) : (
-          <div>
-            <p className="text-sm text-gray-600 mb-1">
-              {isDragActive ? 'Drop your resume here' : 'Drag & drop your resume here'}
-            </p>
-            <p className="text-xs text-gray-500">or click to browse (PDF, TXT)</p>
-          </div>
-        )}
-      </div>
-
-      {/* Text Input */}
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">
-          Or paste your resume text directly:
+          Paste your resume content here:
         </label>
         <textarea
           value={resumeText}
           onChange={handleTextChange}
           placeholder="Paste your resume content here..."
-          className="input-field min-h-[200px] resize-none"
-          rows={8}
+          className="input-field min-h-[300px] resize-none"
+          rows={12}
         />
       </div>
 
@@ -128,6 +49,16 @@ const ResumeUpload = ({ resumeText, setResumeText }) => {
           </span>
         </div>
       )}
+
+      {/* Tips */}
+      <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+        <h4 className="text-sm font-medium text-blue-800 mb-1">💡 Tips for better analysis:</h4>
+        <ul className="text-xs text-blue-700 space-y-1">
+          <li>• Include your work experience, skills, and education</li>
+          <li>• Make sure to include technical skills and qualifications</li>
+          <li>• The more detailed the resume, the better the analysis</li>
+        </ul>
+      </div>
     </div>
   );
 };
