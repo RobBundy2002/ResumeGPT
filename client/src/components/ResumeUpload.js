@@ -63,4 +63,5 @@ const ResumeUpload = ({ resumeText, setResumeText }) => {
   );
 };
 
+// Updated: Simplified text-only input - no file upload
 export default ResumeUpload; 
