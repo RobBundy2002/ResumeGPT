@@ -8,7 +8,7 @@ const getApiUrl = () => {
     return process.env.REACT_APP_API_URL || 'https://resumegpt-production-04e3.up.railway.app';
   }
   // For development, use localhost
-  return 'http://localhost:5000';
+  return 'http://localhost:5001';
 };
 
 const API_BASE_URL = getApiUrl();
