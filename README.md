@@ -1,192 +1,113 @@
-# 🧠 ResumeGPT - AI-Powered Resume Analyzer & Job Match Tool
+# ResumeGPT
 
-A smart, full-stack application that uses OpenAI's GPT-4 to analyze resumes against job descriptions and provide detailed matching scores, missing keywords, and improvement suggestions.
+Privacy-first resume and job-description analyzer with local skill matching and optional AI-powered feedback.
 
-![ResumeGPT Demo](https://img.shields.io/badge/Status-Live-brightgreen)
-![React](https://img.shields.io/badge/React-18.2.0-blue)
-![Node.js](https://img.shields.io/badge/Node.js-Express-green)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-purple)
+![ResumeGPT screenshot](./docs/screenshot.png)
 
-## ✨ Features
+## Features
 
-- **📄 Resume Upload**: Support for PDF and text files with drag-and-drop interface
-- **🎯 Job Description Analysis**: Paste any job description for comprehensive matching
-- **🤖 AI-Powered Analysis**: Uses GPT-4 for intelligent resume-job matching
-- **📊 Match Scoring**: 0-100 score with visual progress indicators
-- **🔍 Keyword Analysis**: Identifies missing and matching keywords
-- **💡 Smart Suggestions**: Actionable improvement recommendations
-- **✍️ Resume Rewrites**: Specific suggestions for bullet point improvements
-- **📱 Responsive Design**: Beautiful, modern UI that works on all devices
-- **⚡ Real-time Analysis**: Fast, accurate results powered by OpenAI
+- Browser-only React + TypeScript application built with Vite.
+- PDF and TXT resume parsing in the browser.
+- Deterministic local matching for skills, aliases, categories, keyword coverage, missing skills, evidence, and explainable scoring.
+- No ResumeGPT backend, account, database, cloud storage, or resume upload.
+- Recommended AI workflow that generates a structured prompt for ChatGPT or another AI service.
+- Advanced BYO OpenAI key mode for direct browser calls, kept behind an `AIProvider` abstraction.
+- Clear Session action removes resume text, job description, local analysis, AI results, and API credentials from memory.
 
-## 🚀 Quick Start
+## Privacy-First Design
 
-### Prerequisites
+Core analysis runs locally in browser memory. Resume files are parsed on the device and are never sent to a ResumeGPT server. The app does not persist resume data by default and never puts resume content in URLs.
 
-- Node.js (v16 or higher)
-- npm or yarn
-- OpenAI API key
+Optional direct OpenAI mode is an advanced tradeoff for GitHub Pages-only hosting. OpenAI recommends keeping API keys on a backend server; because this project intentionally has no backend, users must provide their own key and it is held only in memory for the current session.
 
-### Installation
+## How Local Analysis Works
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/ResumeGPT.git
-   cd ResumeGPT
-   ```
+1. The browser validates the selected PDF or TXT file by extension, MIME type where available, file size, and readable content.
+2. PDF text is extracted with `pdfjs-dist`; TXT files are read with the browser `File` API.
+3. The skill extractor scans the resume and job description with normalized aliases such as `k8s`/`Kubernetes`, `node`/`Node.js`/`NodeJS`, and `postgres`/`PostgreSQL`.
+4. Matching uses token-aware patterns to avoid false positives such as matching `Java` inside `JavaScript`.
+5. Scoring is deterministic: required job skills count 2x, preferred skills count 1.5x, and other detected job skills count 1x.
 
-2. **Install dependencies**
-   ```bash
-   npm run install-all
-   ```
+## Architecture
 
-3. **Set up environment variables**
-   ```bash
-   # Copy the example environment file
-   cp server/env.example server/.env
-   
-   # Edit server/.env and add your OpenAI API key
-   OPENAI_API_KEY=your_openai_api_key_here
-   ```
-
-4. **Start the development servers**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **React** - Modern UI framework
-- **Tailwind CSS** - Utility-first CSS framework
-- **Lucide React** - Beautiful icons
-- **React Dropzone** - File upload functionality
-- **React Hot Toast** - User notifications
-- **Axios** - HTTP client
-
-### Backend
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **OpenAI API** - GPT-4 integration
-- **Multer** - File upload handling
-- **PDF-Parse** - PDF text extraction
-- **Helmet** - Security middleware
-- **CORS** - Cross-origin resource sharing
-
-## 📖 Usage
-
-1. **Upload Resume**: Drag and drop a PDF or text file, or paste your resume content directly
-2. **Add Job Description**: Paste the complete job description you want to match against
-3. **Analyze**: Click "Analyze Match" to get AI-powered insights
-4. **Review Results**: 
-   - Check your match score (0-100)
-   - Review missing and matching keywords
-   - Read improvement suggestions
-   - See specific resume rewrite recommendations
-
-## 🔧 API Endpoints
-
-### Health Check
-```
-GET /api/health
+```mermaid
+flowchart LR
+  User[User Browser] --> Parser[Local PDF/TXT Parser]
+  User --> JD[Job Description Input]
+  Parser --> Matcher[Deterministic Matching Engine]
+  JD --> Matcher
+  Matcher --> Results[Explainable Results UI]
+  Matcher --> Prompt[Generated AI Prompt]
+  Prompt --> Copy[User Copies Prompt]
+  Matcher --> BYO[Optional BYO OpenAI Provider]
+  BYO -. direct user-key request .-> OpenAI[OpenAI API]
 ```
 
-### Upload Resume
-```
-POST /api/upload-resume
-Content-Type: multipart/form-data
-Body: resume file (PDF or TXT)
-```
+## Technology Stack
 
-### Analyze Resume
-```
-POST /api/analyze
-Content-Type: application/json
-Body: {
-  "resume": "resume text content",
-  "jobDescription": "job description text"
-}
-```
+- React
+- TypeScript
+- Vite
+- pdfjs-dist
+- Vitest
+- React Testing Library
+- Playwright
+- GitHub Actions
+- GitHub Pages
 
-## 🎨 Customization
+## Local Development
 
-### Styling
-The app uses Tailwind CSS for styling. You can customize the design by modifying:
-- `client/src/index.css` - Global styles and custom components
-- `client/tailwind.config.js` - Tailwind configuration
-- Individual component files for specific styling
-
-### OpenAI Prompt
-The analysis prompt can be customized in `server/index.js`. Look for the `prompt` variable in the `/api/analyze` endpoint.
-
-## 🚀 Deployment
-
-### GitHub Pages (Current)
-1. Push your code to GitHub
-2. GitHub Actions automatically builds and deploys
-3. Your site will be available at `https://yourusername.github.io/ResumeGPT`
-
-### Railway (Backend)
-1. Connect your GitHub repository to Railway
-2. Set environment variables in Railway dashboard
-3. Deploy automatically on push
-
-### Vercel
-1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy automatically on push
-
-### Heroku
-1. Create a Heroku app
-2. Set environment variables
-3. Deploy using Heroku CLI
-
-### Docker
 ```bash
-# Build the image
-docker build -t resumegpt .
-
-# Run the container
-docker run -p 3000:3000 -p 5000:5000 resumegpt
+npm ci
+npm run dev
 ```
 
-## 🔒 Security
+## Testing
 
-- Rate limiting on API endpoints
-- Helmet.js for security headers
-- File upload validation
-- CORS configuration
-- Input sanitization
+```bash
+npm run lint
+npm run typecheck
+npm run test:coverage
+npm run build
+npm run test:e2e
+```
 
-## 🤝 Contributing
+All OpenAI requests are mocked in tests. CI does not require or use an API key.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## CI/CD
 
-## 📝 License
+`.github/workflows/ci.yml` runs linting, TypeScript checks, coverage tests, and a production build on pushes and pull requests to `main`.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+`.github/workflows/deploy.yml` repeats validation, builds the static site, uploads the `dist` artifact, and deploys through the official GitHub Pages actions:
 
-## 🙏 Acknowledgments
+- `actions/configure-pages`
+- `actions/upload-pages-artifact`
+- `actions/deploy-pages`
 
-- OpenAI for providing the GPT-4 API
-- The React and Node.js communities
-- All contributors and users of ResumeGPT
+No `gh-pages` branch is used.
 
-## 📞 Support
+## GitHub Pages Deployment
 
-If you have any questions or need help:
-- Open an issue on GitHub
-- Check the documentation
-- Contact the maintainers
+Set the repository Pages source to **GitHub Actions** in GitHub repository settings. Pushes to `main` deploy the static site, and `workflow_dispatch` can be used for manual redeployment.
 
----
+## Project Status
 
-**Made with ❤️ for job seekers everywhere**
+ResumeGPT is now a static, privacy-first browser application. The former Express backend and third-party platform deployment configs have been removed.
+
+## Suggested GitHub Metadata
+
+Description:
+
+> Privacy-first resume and job-description analyzer with local skill matching and optional AI-powered feedback.
+
+Topics:
+
+`resume`, `resume-analyzer`, `job-search`, `react`, `typescript`, `vite`, `openai`, `privacy`, `github-pages`, `github-actions`
+
+## Contributing
+
+Keep the project static and privacy-first. Do not add authentication, databases, cloud storage, hosted backends, serverless functions, vector databases, RAG, payments, or deployment targets other than GitHub Pages.
+
+## License
+
+MIT
