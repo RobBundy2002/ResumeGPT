@@ -1,6 +1,17 @@
 # ResumeGPT
 
+[![CI](https://github.com/RobBundy2002/ResumeGPT/actions/workflows/ci.yml/badge.svg)](https://github.com/RobBundy2002/ResumeGPT/actions/workflows/ci.yml)
+[![Deploy to GitHub Pages](https://github.com/RobBundy2002/ResumeGPT/actions/workflows/deploy.yml/badge.svg)](https://github.com/RobBundy2002/ResumeGPT/actions/workflows/deploy.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-2ea44f?logo=github)](https://robbundy2002.github.io/ResumeGPT/)
+![React](https://img.shields.io/badge/React-18-61dafb?logo=react&logoColor=111)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite&logoColor=white)
+![Privacy First](https://img.shields.io/badge/privacy-first-173b2f)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 Privacy-first resume and job-description analyzer with local skill matching and optional AI-powered feedback.
+
+Live app: [robbundy2002.github.io/ResumeGPT](https://robbundy2002.github.io/ResumeGPT/)
 
 ![ResumeGPT screenshot](./docs/screenshot.png)
 
