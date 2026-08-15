@@ -6,7 +6,7 @@ import { AIPanel } from './features/ai/AIPanel';
 import { JobDescriptionInput } from './features/job-description/JobDescriptionInput';
 import { ResumeUpload } from './features/resume/ResumeUpload';
 import { analyzeMatch } from './services/matcher';
-import type { AIAnalysisResult, MatchAnalysis } from './types/analysis';
+import type { MatchAnalysis } from './types/analysis';
 import type { ParsedResume } from './types/resume';
 
 export default function App() {
@@ -14,8 +14,6 @@ export default function App() {
   const [resumeText, setResumeText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [analysis, setAnalysis] = useState<MatchAnalysis | null>(null);
-  const [aiResult, setAIResult] = useState<AIAnalysisResult | null>(null);
-  const [apiKey, setApiKey] = useState('');
   const [resumeError, setResumeError] = useState('');
   const [loading, setLoading] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
@@ -25,7 +23,6 @@ export default function App() {
   function runAnalysis() {
     if (!canAnalyze) return;
     setLoading(true);
-    setAIResult(null);
     window.setTimeout(() => {
       setAnalysis(analyzeMatch({ resumeText, jobDescription }));
       setLoading(false);
@@ -37,8 +34,6 @@ export default function App() {
     setResumeText('');
     setJobDescription('');
     setAnalysis(null);
-    setAIResult(null);
-    setApiKey('');
     setResumeError('');
   }
 
@@ -86,7 +81,7 @@ export default function App() {
           <button type="button" className="primary-button" onClick={runAnalysis} disabled={!canAnalyze}>
             Analyze Match
           </button>
-          <AIPanel analysis={analysis} apiKey={apiKey} onApiKeyChange={setApiKey} aiResult={aiResult} onAIResult={setAIResult} />
+          <AIPanel analysis={analysis} />
         </div>
         <AnalysisResults analysis={analysis} loading={loading} />
       </main>

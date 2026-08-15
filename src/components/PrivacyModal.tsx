@@ -23,8 +23,8 @@ export function PrivacyModal({ open, onClose }: PrivacyModalProps) {
             <li>PDF and TXT parsing happen locally in browser memory.</li>
             <li>Resume text, job descriptions, and analysis results are not persisted by default.</li>
             <li>The generated AI prompt can be copied manually to a service you choose.</li>
-            <li>Advanced direct OpenAI mode uses your own API key and keeps it only in memory.</li>
-            <li>Clear Session removes the selected resume, parsed text, job description, local analysis, AI results, and API credentials.</li>
+            <li>There is no direct browser API-key mode and no application-owned AI credential.</li>
+            <li>Clear Session removes the selected resume, parsed text, job description, and local analysis.</li>
           </ul>
         </div>
       </section>

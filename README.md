@@ -10,15 +10,15 @@ Privacy-first resume and job-description analyzer with local skill matching and 
 - PDF and TXT resume parsing in the browser.
 - Deterministic local matching for skills, aliases, categories, keyword coverage, missing skills, evidence, and explainable scoring.
 - No ResumeGPT backend, account, database, cloud storage, or resume upload.
-- Recommended AI workflow that generates a structured prompt for ChatGPT or another AI service.
-- Advanced BYO OpenAI key mode for direct browser calls, kept behind an `AIProvider` abstraction.
-- Clear Session action removes resume text, job description, local analysis, AI results, and API credentials from memory.
+- Optional AI workflow that generates a structured prompt for ChatGPT or another AI service.
+- No direct browser API-key mode and no application-owned AI credential.
+- Clear Session action removes resume text, job description, and local analysis from memory.
 
 ## Privacy-First Design
 
 Core analysis runs locally in browser memory. Resume files are parsed on the device and are never sent to a ResumeGPT server. The app does not persist resume data by default and never puts resume content in URLs.
 
-Optional direct OpenAI mode is an advanced tradeoff for GitHub Pages-only hosting. OpenAI recommends keeping API keys on a backend server; because this project intentionally has no backend, users must provide their own key and it is held only in memory for the current session.
+Optional AI feedback is handled through a generated prompt that the user can copy into the AI service of their choice. ResumeGPT does not collect API keys or call an AI provider directly.
 
 ## How Local Analysis Works
 
@@ -39,8 +39,6 @@ flowchart LR
   Matcher --> Results[Explainable Results UI]
   Matcher --> Prompt[Generated AI Prompt]
   Prompt --> Copy[User Copies Prompt]
-  Matcher --> BYO[Optional BYO OpenAI Provider]
-  BYO -. direct user-key request .-> OpenAI[OpenAI API]
 ```
 
 ## Technology Stack
@@ -72,7 +70,7 @@ npm run build
 npm run test:e2e
 ```
 
-All OpenAI requests are mocked in tests. CI does not require or use an API key.
+CI does not require or use an API key.
 
 ## CI/CD
 

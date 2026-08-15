@@ -55,18 +55,3 @@ export interface MatchAnalysis {
   explanation: string[];
   createdAt: string;
 }
-
-export interface ResumeRewrite {
-  original: string;
-  suggested: string;
-  supportNotes: string;
-}
-
-export interface AIAnalysisResult {
-  summary: string;
-  strengths: string[];
-  gaps: string[];
-  suggestions: string[];
-  resumeRewrites: ResumeRewrite[];
-  warnings: string[];
-}
