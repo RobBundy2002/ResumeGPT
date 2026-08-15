@@ -1,5 +1,0 @@
-client/
-.gitlab-ci.yml
-deploy.sh
-DEPLOYMENT.md
-vercel.json 

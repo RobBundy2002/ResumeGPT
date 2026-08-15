@@ -12,9 +12,7 @@ yarn-error.log*
 .env.production.local
 
 # Build outputs
-/client/build/
-/client/dist/
-/server/dist/
+dist/
 
 # Logs
 logs
@@ -78,3 +76,7 @@ temp/
 *.db
 *.sqlite
 *.sqlite3 
+
+# Test artifacts
+playwright-report/
+test-results/
